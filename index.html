@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>HKK Tweet Generator</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <a class="navbar-brand text-white">HKK Tweet Generator</a>
+    </nav>
+    <div class="row">
+        <div class="mt-5 col-md-4 offset-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <img src="himal.jpg" class="rounded-circle float-left mr-2">
+                    <h5 class="card-title">Himal Kotelawala<br><small class="text-muted">@himalkk</small></h5>
+                    <p class="card-text">
+                        <p id="tweet-body"></p>
+                        <p>
+                            <small id="tweet-favs" class="text-muted mr-2"></small>
+                            <small id="tweet-date" class="text-muted"></small>
+                        </p>
+                    </p>
+                    <button onclick="printChain()" class="btn btn-primary">Give Me Another</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/markov-generator"></script>
+    <script>
+        let tweets;
+        const url = 'https://gist.githubusercontent.com/janithl/6a570af86089f2a6cb4495fe8cfc3b0b/raw/147538e0c8a751727a8a8c3cb7dbad4719f80c90/himal.json';
+
+        function fetchTweets() {
+            fetch(url).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                tweets = json.filter(t => !t.is_quote_status && !t.retweeted_status && t.text.indexOf('t.co') < 0).map(t => t.text);
+                printChain();
+            });
+        }
+
+        function printChain() {
+            let markov = new Markov({
+                input: tweets,
+                minLength: 5
+            });
+
+            document.getElementById('tweet-body').innerText = markov.makeChain();
+            document.getElementById('tweet-favs').innerText = "♡ " + Math.floor(Math.random() * 20);
+            document.getElementById('tweet-date').innerText = new Date().toLocaleString();
+        }
+
+        window.onload = function () {
+            fetchTweets();
+        };
+    </script>
+</body>
+
+</html>
