@@ -66,8 +66,8 @@
         }
 
         function tweetChain() {
-            let tweetUri = encodeURI(tweetBaseUri + "?text=" + currentChain)
-            window.open(tweetUri,'Share On Twitter',width=300,height=300);
+            let tweetParams = "?text=" + encodeURIComponent(currentChain + " via #HKKTweetGenerator");
+            window.open(tweetBaseUri + tweetParams,'Share On Twitter',width=300,height=300);
             return false;
         }
 
