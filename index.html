@@ -30,7 +30,8 @@
                             <small id="tweet-date" class="text-muted"></small>
                         </p>
                     </p>
-                    <button onclick="printChain()" class="btn btn-primary">Give Me Another</a>
+                    <button onclick="printChain()" class="btn btn-primary">Give Me Another</button>
+                    <a onclick="tweetChain()" class="btn btn-outline-primary">Tweet This</a>
                 </div>
             </div>
         </div>
@@ -38,6 +39,10 @@
     <script src="https://unpkg.com/markov-generator"></script>
     <script>
         let tweets;
+        var currentChain;
+        
+        const tweetBaseUri = "https://twitter.com/intent/tweet";
+
         function fetchTweets() {
             fetch("tweets.json").then(function (response) {
                 return response.json();
@@ -53,9 +58,17 @@
                 minLength: 5
             });
 
-            document.getElementById('tweet-body').innerText = markov.makeChain();
+            currentChain = markov.makeChain();
+
+            document.getElementById('tweet-body').innerText = currentChain;
             document.getElementById('tweet-favs').innerText = "♡ " + Math.floor(Math.random() * 20);
             document.getElementById('tweet-date').innerText = new Date().toLocaleString();
+        }
+
+        function tweetChain() {
+            let tweetParams = "?text=" + encodeURIComponent(currentChain + " via #HKKTweetGenerator");
+            window.open(tweetBaseUri + tweetParams,'Share On Twitter',width=300,height=300);
+            return false;
         }
 
         window.onload = function () {
