@@ -31,7 +31,7 @@
                         </p>
                     </p>
                     <button onclick="printChain()" class="btn btn-primary">Give Me Another</button>
-                    <a onclick="tweetChain()" class="btn btn-outline-primary">Tweet This</a>
+                    <button onclick="tweetChain()" class="btn btn-light">Tweet This</button>
                 </div>
             </div>
         </div>
@@ -66,8 +66,8 @@
         }
 
         function tweetChain() {
-            let tweetParams = "?text=" + encodeURIComponent(currentChain + " via #HKKTweetGenerator");
-            window.open(tweetBaseUri + tweetParams,'Share On Twitter',width=300,height=300);
+            let tweetParams = "?text=" + encodeURIComponent(`"${currentChain}" via #HKKTweetGenerator`);
+            window.open(tweetBaseUri + tweetParams, 'Share On Twitter', width=300, height=300);
             return false;
         }
 
